@@ -1,0 +1,3 @@
+vault_path: /path/to/your/obsidian/vault
+batch_size: 10
+verbose: false
