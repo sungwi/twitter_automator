@@ -16,6 +16,7 @@ def parse_args() -> dict:
     parser.add_argument("--mock", action="store_true", help="Use mock tweet data")
     parser.add_argument("--batch-size", type=int, default=None, help="Tweets per OpenAI API call")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
+    parser.add_argument("--model", type=str, default=None, help="OpenAI model to use (default: gpt-4o-mini)")
     args = parser.parse_args()
     return {
         "since": args.since,
@@ -23,6 +24,7 @@ def parse_args() -> dict:
         "mock": args.mock,
         "batch_size": args.batch_size,
         "verbose": args.verbose,
+        "openai_model": args.model,
     }
 
 
@@ -61,7 +63,7 @@ def run(config: AppConfig) -> None:
         return
 
     # 2. Classify tweets
-    classifier = OpenAIClassifier(api_key=config.openai_api_key, batch_size=config.batch_size)
+    classifier = OpenAIClassifier(api_key=config.openai_api_key, model=config.openai_model, batch_size=config.batch_size)
     print(f"[Classifier] Classifying {len(tweets)} tweets (batch size: {config.batch_size})")
     classifications = classifier.classify_tweets(tweets)
     print(f"[Classifier] Classified {len(classifications)} tweets")

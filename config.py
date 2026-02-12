@@ -15,6 +15,7 @@ class AppConfig:
     twitter_access_token: str = ""
     twitter_access_token_secret: str = ""
     openai_api_key: str = ""
+    openai_model: str = "gpt-4o-mini"
     batch_size: int = 10
     verbose: bool = False
     mock: bool = False
@@ -63,6 +64,7 @@ def load_config(cli_args: dict | None = None) -> AppConfig:
     # 3. Build config: start with yaml, override with env, then CLI args
     config = AppConfig(
         vault_path=yaml_config.get("vault_path", ""),
+        openai_model=yaml_config.get("openai_model", "gpt-4o-mini"),
         batch_size=yaml_config.get("batch_size", 10),
         verbose=yaml_config.get("verbose", False),
     )
@@ -93,5 +95,7 @@ def load_config(cli_args: dict | None = None) -> AppConfig:
             config.mock = True
         if cli_args.get("since"):
             config.since = cli_args["since"]
+        if cli_args.get("openai_model"):
+            config.openai_model = cli_args["openai_model"]
 
     return config
