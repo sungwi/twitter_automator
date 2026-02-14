@@ -34,7 +34,7 @@ class TwitterFetcher:
 
     def _get_authenticated_user_id(self) -> str:
         try:
-            resp = self.client.get_me()
+            resp = self.client.get_me(user_auth=True)
         except tweepy.Unauthorized as e:
             raise RuntimeError(
                 "Twitter auth failed — check your OAuth 1.0a credentials"
@@ -59,6 +59,7 @@ class TwitterFetcher:
                 user_fields=USER_FIELDS,
                 expansions=EXPANSIONS,
                 max_results=MAX_RESULTS_PER_PAGE,
+                user_auth=True,
             )
 
             for response in paginator:
